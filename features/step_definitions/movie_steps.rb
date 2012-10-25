@@ -1,11 +1,28 @@
 # Add a declarative step here for populating the DB with movies.
+class CreateMovies < ActiveRecord::Migration
+  def up
+    create_table :movies do |t|
+      t.string :title
+      t.string :rating
+      t.string :release_date
+    end
+  end
+end
+CreateMovies.up
+
+class Movie < ActiveRecord::Base
+  end
+
 
 Given /the following movies exist/ do |movies_table|
+  #Movie.create({:title => 'The Incredibles', :rating => 'PG', :release_date => '5-Nov-2004'})
   movies_table.hashes.each do |movie|
     # each returned element will be a hash whose key is the table header.
     # you should arrange to add that movie to the database here.
+    Movie.create!(movie)
   end
-  flunk "Unimplemented"
+  #flunk "Unimplemented"
+   assert movies_table.hashes.size == Movie.all.count
 end
 
 # Make sure that one string (regexp) occurs before or after another one
